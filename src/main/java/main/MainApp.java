@@ -4,13 +4,13 @@ import config.AppConfig;
 import dataloader.JsonDataLoader;
 import dataloader.MovieLibraryLoader;
 import dataloader.XmlDataLoader;
-import io.DataFormat;
+import io.DisplayableChoiceHelper;
 import io.InputHandler;
+import io.LocalizedMessages;
+import io.MessageKey;
 import model.MovieLibrary;
-import config.AvailableLocale;
 import service.MenuOption;
 import service.MovieService;
-import io.LocalizedMessages;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -27,12 +27,14 @@ public class MainApp {
         MovieService movieService = new MovieService(movieLibrary);
         mainMenuLoop(movieService);
     }
+
     private static void setApplicationLocale() {
-        AvailableLocale selectedLocale = inputHandler.getLocaleChoice();
+        var selectedLocale = inputHandler.getLocaleChoice();
         LocalizedMessages.setLocale(selectedLocale.getLocale());
     }
+
     private static MovieLibraryLoader selectDataLoader() {
-        DataFormat formatChoice = inputHandler.getDataFormatChoice();
+        var formatChoice = inputHandler.getDataFormatChoice();
 
         return switch (formatChoice) {
             case JSON -> new JsonDataLoader(appConfig.getJsonPath());
@@ -52,15 +54,17 @@ public class MainApp {
 
     private static void mainMenuLoop(MovieService movieService) {
         while (true) {
-            MenuOption.displayOptions();
-            int choice = inputHandler.promptForInt(LocalizedMessages.SELECT_OPTION);
+            DisplayableChoiceHelper.displayChoices(MenuOption.class, MessageKey.PROMPT_MAIN_MENU_CHOICE);
+
+            var choice = inputHandler.promptForInt(LocalizedMessages.getMessage(MessageKey.YOUR_CHOICE));
 
             if (choice < 1 || choice > MenuOption.values().length) {
-                System.out.println(LocalizedMessages.INVALID_MENU_CHOICE);
+                System.out.println(LocalizedMessages.getMessage(MessageKey.INVALID_MENU_CHOICE));
                 continue;
             }
 
-            MenuOption.getOptionByChoice(choice).execute(movieService, inputHandler);
+            var option = DisplayableChoiceHelper.fromChoice(MenuOption.class, choice);
+            option.ifPresent(menuOption -> menuOption.execute(movieService, inputHandler));
         }
     }
 }

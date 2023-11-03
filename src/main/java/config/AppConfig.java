@@ -28,6 +28,7 @@ public class AppConfig {
     public String getXmlPath() {
         return getValue("xmlPath");
     }
+
     private String getValue(String key) {
         return properties.getProperty(key);
     }

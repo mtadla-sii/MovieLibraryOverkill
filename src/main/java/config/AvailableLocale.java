@@ -1,10 +1,15 @@
 package config;
 
-import java.util.Locale;
+import common.DisplayableChoice;
+import lombok.Getter;
 
-public enum AvailableLocale {
+import java.util.Locale;
+import java.util.Optional;
+
+@Getter
+public enum AvailableLocale implements DisplayableChoice {
     ENGLISH("English", Locale.ENGLISH),
-    POLISH("Polski", new Locale("pl", "PL"));
+    POLISH("Polski", new Locale("pl"));
 
     private final String displayName;
     private final Locale locale;
@@ -14,20 +19,8 @@ public enum AvailableLocale {
         this.locale = locale;
     }
 
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public Locale getLocale() {
-        return locale;
-    }
-
-    public static AvailableLocale fromChoice(int choice) {
-        for (AvailableLocale localeOption : values()) {
-            if (localeOption.ordinal() + 1 == choice) {
-                return localeOption;
-            }
-        }
-        return null;
+    @Override
+    public int getDisplayChoice() {
+        return ordinal() + 1;
     }
 }

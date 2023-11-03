@@ -1,27 +1,24 @@
 package io;
 
-public enum DataFormat {
+import common.DisplayableChoice;
+import lombok.Getter;
+
+import java.util.Optional;
+
+@Getter
+public enum DataFormat implements DisplayableChoice {
     JSON(1, "JSON"),
     XML(2, "XML");
 
     private final int choice;
-    private final String description;
+    private final String displayName;
 
-    DataFormat(int choice, String description) {
+    DataFormat(int choice, String displayName) {
         this.choice = choice;
-        this.description = description;
+        this.displayName = displayName;
     }
 
-    public static DataFormat fromChoice(int choice) {
-        for (DataFormat format : values()) {
-            if (format.choice == choice) {
-                return format;
-            }
-        }
-        return null;
-    }
-
-    public String getDescription() {
-        return description;
+    public int getDisplayChoice() {
+        return ordinal() + 1;
     }
 }
