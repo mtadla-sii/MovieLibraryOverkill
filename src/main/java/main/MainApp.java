@@ -4,7 +4,7 @@ import config.AppConfig;
 import dataloader.JsonDataLoader;
 import dataloader.MovieLibraryLoader;
 import dataloader.XmlDataLoader;
-import io.DisplayableChoiceHelper;
+import io.EnumChoiceDisplayHelper;
 import io.InputHandler;
 import io.LocalizedMessages;
 import io.MessageKey;
@@ -54,7 +54,7 @@ public class MainApp {
 
     private static void mainMenuLoop(MovieService movieService) {
         while (true) {
-            DisplayableChoiceHelper.displayChoices(MenuOption.class, MessageKey.PROMPT_MAIN_MENU_CHOICE);
+            EnumChoiceDisplayHelper.displayChoices(MenuOption.class, MessageKey.PROMPT_MAIN_MENU_CHOICE);
 
             var choice = inputHandler.promptForInt(LocalizedMessages.getMessage(MessageKey.YOUR_CHOICE));
 
@@ -63,7 +63,7 @@ public class MainApp {
                 continue;
             }
 
-            var option = DisplayableChoiceHelper.fromChoice(MenuOption.class, choice);
+            var option = EnumChoiceDisplayHelper.fromChoice(MenuOption.class, choice);
             option.ifPresent(menuOption -> menuOption.execute(movieService, inputHandler));
         }
     }

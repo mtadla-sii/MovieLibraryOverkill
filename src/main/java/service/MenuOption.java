@@ -1,6 +1,6 @@
 package service;
 
-import common.DisplayableChoice;
+import common.DisplayableEnumChoice;
 import io.InputHandler;
 import io.LocalizedMessages;
 import io.MessageKey;
@@ -8,7 +8,7 @@ import lombok.Getter;
 import service.command.*;
 
 
-public enum MenuOption implements DisplayableChoice {
+public enum MenuOption implements DisplayableEnumChoice {
     SHOW_MOVIES_BETWEEN_DATES(1, LocalizedMessages.getMessage(MessageKey.PROMPT_DATES), new ShowMoviesBetweenDatesCommand()),
     SHOW_RANDOM_MOVIE(2, LocalizedMessages.getMessage(MessageKey.DISPLAY_RANDOM_MOVIE), new ShowRandomMovieCommand()),
     SHOW_MOVIES_BY_ACTOR(3, LocalizedMessages.getMessage(MessageKey.PROMPT_SEARCH_ACTOR), new ShowMoviesByActorCommand()),

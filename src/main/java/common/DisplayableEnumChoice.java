@@ -1,6 +1,6 @@
 package common;
 
-public interface DisplayableChoice {
+public interface DisplayableEnumChoice {
     int getDisplayChoice();
 
     String getDisplayName();

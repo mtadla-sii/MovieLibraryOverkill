@@ -1,12 +1,10 @@
 package io;
 
-import common.DisplayableChoice;
+import common.DisplayableEnumChoice;
 import lombok.Getter;
 
-import java.util.Optional;
-
 @Getter
-public enum DataFormat implements DisplayableChoice {
+public enum DataFormat implements DisplayableEnumChoice {
     JSON(1, "JSON"),
     XML(2, "XML");
 

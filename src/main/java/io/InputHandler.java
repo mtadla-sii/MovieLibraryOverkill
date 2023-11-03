@@ -1,12 +1,11 @@
 package io;
 
-import common.DisplayableChoice;
+import common.DisplayableEnumChoice;
 import config.AvailableLocale;
 import model.YearRange;
 import validator.InputValidator;
 
 import java.util.Scanner;
-import java.util.function.Predicate;
 
 public class InputHandler {
 
@@ -28,12 +27,27 @@ public class InputHandler {
         }
     }
 
+
     public int promptForInt(String message) {
-        return promptWithValidation(message, InputValidator::isValidInt, MessageKey.ENTER_VALID_INT);
+        while (true) {
+            System.out.print(message);
+            var input = scanner.nextLine();
+            if (InputValidator.isValidInt(input)) {
+                return Integer.parseInt(input);
+            }
+            System.out.println(LocalizedMessages.getMessage(MessageKey.ENTER_VALID_INT));
+        }
     }
 
     public String promptForValidString(String message) {
-        return promptWithValidation(message, InputValidator::isValidString, MessageKey.ENTER_VALID_STRING);
+        while (true) {
+            System.out.print(message);
+            var input = scanner.nextLine();
+            if (InputValidator.isValidString(input)) {
+                return input;
+            }
+            System.out.println(LocalizedMessages.getMessage(MessageKey.ENTER_VALID_STRING));
+        }
     }
 
     public AvailableLocale getLocaleChoice() {
@@ -44,25 +58,16 @@ public class InputHandler {
         return getChoice(DataFormat.class, MessageKey.PROMPT_DATA_FORMAT_CHOICE, MessageKey.INVALID_MENU_CHOICE);
     }
 
-
-    private <T> T promptWithValidation(String message, Predicate<String> validator, MessageKey errorMessageKey) {
-        while (true) {
-            System.out.print(message);
-            var input = scanner.nextLine();
-
-            if (validator.test(input)) {
-                return (T) input;
-            }
-
-            displayError(errorMessageKey);
-        }
+    private boolean isValidYearOrder(int start, int end) {
+        return start <= end;
     }
-    private  <E extends Enum<E> & DisplayableChoice> E getChoice(Class<E> enumClass, MessageKey promptMessage, MessageKey invalidChoiceMessage) {
+
+    private <E extends Enum<E> & DisplayableEnumChoice> E getChoice(Class<E> enumClass, MessageKey promptMessage, MessageKey invalidChoiceMessage) {
         while (true) {
-            DisplayableChoiceHelper.displayChoices(enumClass, promptMessage);
+            EnumChoiceDisplayHelper.displayChoices(enumClass, promptMessage);
 
             var choice = promptForInt(LocalizedMessages.getMessage(MessageKey.YOUR_CHOICE));
-            var selectedOption = DisplayableChoiceHelper.fromChoice(enumClass, choice);
+            var selectedOption = EnumChoiceDisplayHelper.fromChoice(enumClass, choice);
 
             if (selectedOption.isPresent()) {
                 return selectedOption.get();
@@ -70,9 +75,7 @@ public class InputHandler {
             System.out.println(LocalizedMessages.getMessage(invalidChoiceMessage));
         }
     }
-    private boolean isValidYearOrder(int start, int end) {
-        return start <= end;
-    }
+
     private void displayError(MessageKey key) {
         System.out.println(LocalizedMessages.getMessage(key));
     }

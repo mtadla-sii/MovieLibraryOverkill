@@ -1,13 +1,12 @@
 package config;
 
-import common.DisplayableChoice;
+import common.DisplayableEnumChoice;
 import lombok.Getter;
 
 import java.util.Locale;
-import java.util.Optional;
 
 @Getter
-public enum AvailableLocale implements DisplayableChoice {
+public enum AvailableLocale implements DisplayableEnumChoice {
     ENGLISH("English", Locale.ENGLISH),
     POLISH("Polski", new Locale("pl"));
 
