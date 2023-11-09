@@ -26,7 +26,7 @@ public class MovieService {
 
     public Movie getRandomMovie() {
         List<Movie> movies = movieLibrary.getMovies();
-        return movieLibrary.getMovies().get(random.nextInt(movies.size()));
+        return movies.get(random.nextInt(movies.size()));
     }
 
     public List<Movie> findMoviesByActor(String firstName, String lastName) {
